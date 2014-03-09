@@ -12,10 +12,18 @@ end
 class HumanPlayer
   attr_reader :revealed_word
 
+
+  # private ?
+  def get_length
+   puts "How long is your word?"
+   word_length = gets.chomp.to_i
+   @revealed_word = Array.new(word_length) 
+  end
+  
 end
 
 class ComputerPlayerDumb
-  attr_accessor :revealed_word
+  attr_reader :revealed_word
   
     def initialize
         @secret_word = secret_word
