@@ -186,17 +186,57 @@ class ComputerPlayerDumb
     result
   end
        
-   # private
+  private
   
   def secret_word
     words = File.readlines('dictionary.txt')
     @secret_word = words.sample.strip
   end
-  
 
 
 end
 
 class ComputerPlayerSmart < ComputerPlayerDumb
+  
+  attr_accessor :possible_words
+  
+  def initialize
+    @secret_word = secret_word
+    @revealed_word = set_revealed_word
+    @guessed_letters = []
+    @possible_words = File.readlines('dictionary.txt')
+  end
+  
+  def just_right_length(num)
+    possible_words.map! { |word| word.chomp! }
+    possible_words.delete_if { |word| word.length != num }
+  end
+  
+  def guess_a_letter
+    freq = Hash.new { 0 }
+    possible_words.each do |word|
+      word.each_char do |letter|
+        freq[letter] += 1
+      end
+    end
+    guess = ""
+    max = 0
+    freq.each do |k,v|
+      if guessed_letters.include?(k)
+      elsif v > max
+        guess = k
+        max = v
+      end
+    end
+    guess
+  end
+  
+  def words_with_wrong_letters
+    bad_letters = guessed_letters - revealed_word.compact
+    bad_letters.each do |letter|
+      possible_words.delete_if { |word| word.include?(letter)}
+    end
+  end
+  
 
 end
