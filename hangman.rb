@@ -22,7 +22,7 @@ class Hangman
       print "You've guessed: #{@guesser.guessed_letters.join(', ')}\n"
       render_revealed_word
       guess = @guesser.guess_a_letter
-      @setter.update_revealed_word(guess)
+      @setter.update_revealed_word(guess) if @setter.letter_in_word?(guess)
     end
     if won?
       puts "You guessed my word!"
@@ -84,27 +84,25 @@ class HumanPlayer
   end
   
   def update_revealed_word(str)
-    if letter_in_word(str)
-      number_letter_in_word(str).to_i.times do |i|
-        puts render_revealed_word
-        numbers = []
-        (1..revealed_word.length).each do |i|
-          numbers << i
-        end
-        puts numbers.join("\t")
-        begin
-          puts "Where does #{str} occur in your word?"
-          print "> "
-          index = gets.chomp
-          Integer(index)
-        rescue
-          retry
-        end
-      @revealed_word[index.to_i - 1] = str
+    number_letter_in_word(str).to_i.times do |i|
+      puts render_revealed_word
+      numbers = []
+      (1..revealed_word.length).each do |i|
+        numbers << i
       end
+      puts numbers.join("\t")
+      begin
+        puts "Where does #{str} occur in your word?"
+        print "> "
+        index = gets.chomp
+        Integer(index)
+      rescue
+        retry
+      end
+    @revealed_word[index.to_i - 1] = str
     end
-    
   end
+    
   
   def number_letter_in_word(str)
     begin
@@ -160,6 +158,7 @@ class ComputerPlayerDumb
     pos_letters = ALPHABET - guessed_letters 
     guess = pos_letters.sample
     guessed_letters << guess
+    return guess
   end
   
   def update_revealed_word(str)
