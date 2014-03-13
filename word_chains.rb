@@ -11,16 +11,18 @@ attr_reader :dictionary
   end
   
   def adjacent_words(word, dictionary)
-    dictionary.select { |test_word| one_letter_different(test_word, word)}
+    dictionary.select { |test_word| one_letter_different?(test_word, word)}
   end
   
-  def one_letter_different(test_word, word)
+  def one_letter_different?(test_word, word)
     num_diff = 0
     (0...word.length).each { |i| num_diff += 1 if word[i] != test_word[i] }
     num_diff == 1 ? true : false
   end
   
-  
+  def word_list_correct_length(num)
+    possible_word << dictionary.selection { |test_word| test_word.length == num }
+  end
   
 end
 
