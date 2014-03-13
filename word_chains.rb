@@ -15,8 +15,12 @@ attr_reader :dictionary
   end
   
   def one_letter_different(test_word, word)
-  
+    num_diff = 0
+    (0...word.length).each { |i| num_diff += 1 if word[i] != test_word[i] }
+    num_diff == 1 ? true : false
   end
+  
+  
   
 end
 
