@@ -22,7 +22,7 @@ attr_reader :dictionary
   end
   
   def word_list_correct_length(num)
-    possible_words + dictionary.select { |test_word| test_word.length == num }
+    @possible_words = possible_words + dictionary.select { |test_word| test_word.length == num }
   end
   
   def build_tree(start_word, end_word)
@@ -32,7 +32,7 @@ attr_reader :dictionary
     
     root = TreeNode.new(start_word)
     
-    possible_words -= [start_word]
+    @possible_words -= [start_word]
     
     node_queue = [root]
     
@@ -41,11 +41,11 @@ attr_reader :dictionary
     until node_queue.empty?
       current_node = node_queue.shift
       found_children = adjacent_words(current_node.value, possible_words)
-      possible_words -= found_children
+      @possible_words -= found_children
       
       found_children.each do |word|
         new_node = TreeNode.new(word)
-        current_node.add_child(new_now)
+        current_node.add_child(new_node)
         node_queue << new_node
       end
     end
