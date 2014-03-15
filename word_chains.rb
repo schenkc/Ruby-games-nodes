@@ -29,12 +29,27 @@ attr_reader :dictionary
     raise "Can't connect #{start_word} to #{end_word} as they aren't the same length" if start_word.length != end_word.length
     word_list_correct_length(start_word.length)
     # building the tree should loop till adjacent_words.empty?
-    tree = TreeNode.new(start_word)
+    
+    root = TreeNode.new(start_word)
+    
     possible_words -= [start_word]
-    children = adjacent_words(start_word, possible_words)
-    children.each do |child|
-      TreeNode.new(child)
+    
+    node_queue = [root]
+    
+    seen_word = [start_word]
+    
+    until node_queue.empty?
+      current_node = node_queue.shift
+      found_children = adjacent_words(current_node.value, possible_words)
+      possible_words -= found_children
+      
+      found_children.each do |word|
+        new_node = TreeNode.new(word)
+        current_node.add_child(new_now)
+        node_queue << new_node
+      end
     end
+    root
   end
   
 end
