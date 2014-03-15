@@ -47,9 +47,16 @@ attr_reader :dictionary
         new_node = TreeNode.new(word)
         current_node.add_child(new_node)
         node_queue << new_node
+        return root if word == end_word
       end
     end
     root
+  end
+  
+  def find_path(start_word, end_word)
+    target_node = build_tree(start_word, end_word).bfs(end_word)
+
+    target_node.path
   end
   
 end
